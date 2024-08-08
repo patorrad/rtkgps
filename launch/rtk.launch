@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node pkg="rtkgps" type="rtk.py" name="rtkgps" output="screen" >
+    
+    <!-- LOGIN DETAILS -->
+    <!--<param name="asus_pwd"          type="string"       value="robot123!" /> -->
+
+  </node>
+</launch>
+
