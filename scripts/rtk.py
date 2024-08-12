@@ -53,7 +53,7 @@ from gnssapp import GNSSSkeletonApp
 CONNECTED = 1
 
 import rospy
-from csi_utils.aoa_node_main import aoa_node
+#from csi_utils.aoa_node_main import aoa_node
 import numpy as np
 import os
 import sys
@@ -96,7 +96,7 @@ class publishGPS(object): # main(**kwargs):
         self.verbosity = 0  # 0 - no output, 1 - print identities, 2 - print full message
 
         rospy.loginfo("Initializing GPS publishing")
-        self.gps_pub = rospy.Publisher('/gps_new', NavSatFix, queue_size=1)
+        self.gps_pub = rospy.Publisher('/gps', NavSatFix, queue_size=1)
         rospy.sleep(8)
         rospy.loginfo("Initialized")
 
@@ -152,7 +152,7 @@ class publishGPS(object): # main(**kwargs):
                                     #if verbosity == 1:
                                     #    print(f"GNSS>> {parsed_data.identity}")
                                     #elif verbosity == 2:
-                                    #    print(parsed_data)
+                                    print(parsed_data)
                                     
                                     if parsed_data:
                                         if hasattr(parsed_data, "lat") and hasattr(parsed_data, "lon"):
@@ -162,6 +162,10 @@ class publishGPS(object): # main(**kwargs):
                                             gpsmsg.latitude = parsed_data.lat
                                             gpsmsg.longitude = parsed_data.lon
                                             gpsmsg.altitude = parsed_data.height * 0.001
+                                            if parsed_data.gnssFixOk:
+                                              gpsmsg.status.status = 2
+                                            else:
+                                              gpsmsg.status.status = -1
                                             self.gps_pub.publish(gpsmsg)
 	                        
                                 self.recv_queue.task_done()
@@ -180,11 +184,9 @@ if __name__ == "__main__":
 
     rospy.init_node('gps_node', anonymous=True)
 
-    #main(**dict(arg.spit("=") for arg in argv[1:]))
 
     #create node wrapper
     gps_publisher = publishGPS()
-    #aoa.pub_prof = rospy.get_param("~publish_profile", True)
 
     gps_publisher.run()
 
