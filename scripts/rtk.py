@@ -152,7 +152,7 @@ class publishGPS(object): # main(**kwargs):
                                     #if verbosity == 1:
                                     #    print(f"GNSS>> {parsed_data.identity}")
                                     #elif verbosity == 2:
-                                    print(parsed_data)
+                                    #print(parsed_data)
                                     
                                     if parsed_data:
                                         if hasattr(parsed_data, "lat") and hasattr(parsed_data, "lon"):
@@ -172,8 +172,8 @@ class publishGPS(object): # main(**kwargs):
 
                             except Empty:
                                 pass
-                        rospy.sleep(1)
-                    rospy.sleep(1)
+                        rospy.sleep(.5)
+                    rospy.sleep(.5)
 
         except KeyboardInterrupt:
             self.stop_event.set()
